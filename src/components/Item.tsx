@@ -1,16 +1,16 @@
-import { todoI } from "@/interfaces/todoI";
+import { itemI } from "@/interfaces/todoI";
 import Check from "@mui/icons-material/Check";
 import Close from "@mui/icons-material/Close";
 import Restore from "@mui/icons-material/Restore";
 
-type TodoItemProps = {
-  todo: todoI;
+type ItemProps = {
+  todo: itemI;
   index: number;
   switchDone: (index: number) => void;
   removeListItem: (index: number) => void;
 };
 
-const TodoItem: React.FC<TodoItemProps> = ({
+const Item: React.FC<ItemProps> = ({
   todo,
   index,
   switchDone,
@@ -37,4 +37,4 @@ const TodoItem: React.FC<TodoItemProps> = ({
   );
 };
 
-export default TodoItem;
+export default Item;

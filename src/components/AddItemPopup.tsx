@@ -3,14 +3,14 @@ import { useState, useEffect, useRef } from "react";
 import Add from "@mui/icons-material/Add";
 import Close from "@mui/icons-material/Close";
 
-import { todoI } from "@/interfaces/todoI";
+import { itemI } from "@/interfaces/todoI";
 
-type AddTodoPopupProps = {
+type AddItemPopupProps = {
   onClose: () => void;
-  addTodo: (todo: todoI) => void;
+  addTodo: (todo: itemI) => void;
 };
 
-const AddTodoPopup: React.FC<AddTodoPopupProps> = ({ onClose, addTodo }) => {
+const AddItemPopup: React.FC<AddItemPopupProps> = ({ onClose, addTodo }) => {
   const [inputValue, setInputValue] = useState<string>("");
   const inputRef = useRef<HTMLInputElement>(null);
   const popupRef = useRef<HTMLDivElement>(null);
@@ -78,4 +78,4 @@ const AddTodoPopup: React.FC<AddTodoPopupProps> = ({ onClose, addTodo }) => {
   );
 };
 
-export default AddTodoPopup;
+export default AddItemPopup;

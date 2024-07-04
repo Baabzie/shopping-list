@@ -1,62 +1,62 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import TodoItem from "./TodoItem";
-import AddTodoPopup from "./AddTodoPopup";
+import Item from "./Item";
+import AddItemPopup from "./AddItemPopup";
 import Add from "@mui/icons-material/Add";
 
-import { todoI } from "@/interfaces/todoI";
+import { itemI } from "@/interfaces/todoI";
 
-const TodoList = () => {
-  const [todos, setTodos] = useState<todoI[]>([]);
+const ItemsList = () => {
+  const [items, setItems] = useState<itemI[]>([]);
   const [showPopup, setShowPopup] = useState<boolean>(false);
   const [firstRender, setFirstRender] = useState<boolean>(true); // To prevent the first render of the site to overwrite the local storage with an empty array.
   const [sortOption, setSortOption] = useState<string>("date");
 
   useEffect(() => {
-    let storedTodos = localStorage.getItem("todos");
-    if (storedTodos) {
-      let todosArray: todoI[] = JSON.parse(storedTodos);
-      setTodos(todosArray);
+    let storedItems = localStorage.getItem("items");
+    if (storedItems) {
+      let itemsArray: itemI[] = JSON.parse(storedItems);
+      setItems(itemsArray);
     }
   }, []);
 
   useEffect(() => {
     // If "firstRender" is true we wont change local storage...
     if (!firstRender) {
-      let todosArray = [...todos];
-      localStorage.setItem("todos", JSON.stringify(todosArray));
+      let itemsArray = [...items];
+      localStorage.setItem("items", JSON.stringify(itemsArray));
       return;
     }
     // ...and then we set "firstRender" to false so we after the initial render actually change the local storage.
     setFirstRender(false);
-  }, [todos, firstRender]);
+  }, [items, firstRender]);
 
   const togglePopup = () => {
     setShowPopup(!showPopup);
   };
 
-  const addTodo = (newTodo: todoI) => {
-    newTodo.date = new Date().toISOString();
-    const newTodos = [...todos];
-    newTodos.push(newTodo);
-    setTodos(sortingFunction(sortOption, newTodos));
+  const addTodo = (newItem: itemI) => {
+    newItem.date = new Date().toISOString();
+    const newItems = [...items];
+    newItems.push(newItem);
+    setItems(sortingFunction(sortOption, newItems));
   };
 
   const switchDone = (index: number) => {
-    let newTodos = [...todos];
-    newTodos[index].date = new Date().toISOString();
-    newTodos[index].done = !newTodos[index].done;
-    setTodos(sortingFunction(sortOption, newTodos));
+    let newItems = [...items];
+    newItems[index].date = new Date().toISOString();
+    newItems[index].done = !newItems[index].done;
+    setItems(sortingFunction(sortOption, newItems));
   };
 
   const removeListItem = (index: number) => {
-    let newTodos = [...todos];
-    newTodos.splice(index, 1);
-    setTodos(newTodos);
+    let newItems = [...items];
+    newItems.splice(index, 1);
+    setItems(newItems);
   };
 
-  const sortingFunction = (option: string, todosArray: todoI[]) => {
-    const sortedTodos = [...todosArray].sort((a, b) => {
+  const sortingFunction = (option: string, itemsArray: itemI[]) => {
+    const sortedItems = [...itemsArray].sort((a, b) => {
       if (option === "date") {
         if (!a.date) return 1;
         if (!b.date) return -1;
@@ -66,19 +66,19 @@ const TodoList = () => {
       }
       return 0;
     });
-    return sortedTodos;
+    return sortedItems;
   };
 
   const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedOption = event.target.value;
     setSortOption(selectedOption);
 
-    setTodos(sortingFunction(selectedOption, todos));
+    setItems(sortingFunction(selectedOption, items));
   };
 
   return (
     <>
-      {showPopup && <AddTodoPopup onClose={togglePopup} addTodo={addTodo} />}
+      {showPopup && <AddItemPopup onClose={togglePopup} addTodo={addTodo} />}
       <div className="lists-container">
         <div className="list-header-container">
           <h2>Todos:</h2>
@@ -95,10 +95,10 @@ const TodoList = () => {
           </button>
         </div>
         <ul className="todo-list">
-          {todos.map((todo, index) =>
-            !todo.done ? (
-              <TodoItem
-                todo={todo}
+          {items.map((item, index) =>
+            !item.done ? (
+              <Item
+                todo={item}
                 key={index}
                 index={index}
                 switchDone={switchDone}
@@ -111,10 +111,10 @@ const TodoList = () => {
           <h2>Completed:</h2>
         </div>
         <ul className="done-list">
-          {todos.map((todo, index) =>
-            todo.done ? (
-              <TodoItem
-                todo={todo}
+          {items.map((item, index) =>
+            item.done ? (
+              <Item
+                todo={item}
                 key={index}
                 index={index}
                 switchDone={switchDone}
@@ -128,4 +128,4 @@ const TodoList = () => {
   );
 };
 
-export default TodoList;
+export default ItemsList;

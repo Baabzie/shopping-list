@@ -1,11 +1,11 @@
 import React from "react";
 import Layout from "@/components/Layout";
-import TodoList from "@/components/TodoList";
+import ItemsList from "@/components/ItemsList";
 
 const Home: React.FC = () => {
   return (
     <Layout>
-      <TodoList />
+      <ItemsList />
     </Layout>
   );
 };
