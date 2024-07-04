@@ -3,14 +3,17 @@ import { useState, useEffect, useRef } from "react";
 import Add from "@mui/icons-material/Add";
 import Close from "@mui/icons-material/Close";
 
-import { itemI } from "@/interfaces/todoI";
-
-type AddItemPopupProps = {
+type AddStorePopupProps = {
   onClose: () => void;
-  addItem: (todo: itemI) => void;
+  addStore: (store: string) => void;
+  stores: string[];
 };
 
-const AddItemPopup: React.FC<AddItemPopupProps> = ({ onClose, addItem }) => {
+const AddStorePopup: React.FC<AddStorePopupProps> = ({
+  onClose,
+  addStore,
+  stores,
+}) => {
   const [inputValue, setInputValue] = useState<string>("");
   const inputRef = useRef<HTMLInputElement>(null);
   const popupRef = useRef<HTMLDivElement>(null);
@@ -43,7 +46,7 @@ const AddItemPopup: React.FC<AddItemPopupProps> = ({ onClose, addItem }) => {
 
   const handleAddBtn = () => {
     if (inputValue.length > 0) {
-      addItem({ text: inputValue, done: false });
+      addStore(inputValue);
       onClose();
     }
   };
@@ -57,7 +60,7 @@ const AddItemPopup: React.FC<AddItemPopupProps> = ({ onClose, addItem }) => {
   return (
     <div className="popup-container">
       <div className="popup" ref={popupRef}>
-        <h3>Add New Item</h3>
+        <h3>Add Store</h3>
         <input
           type="text"
           value={inputValue}
@@ -78,4 +81,4 @@ const AddItemPopup: React.FC<AddItemPopupProps> = ({ onClose, addItem }) => {
   );
 };
 
-export default AddItemPopup;
+export default AddStorePopup;

@@ -4,22 +4,29 @@ import Close from "@mui/icons-material/Close";
 import Restore from "@mui/icons-material/Restore";
 
 type ItemProps = {
-  todo: itemI;
+  item: itemI;
   index: number;
   switchDone: (index: number) => void;
   removeListItem: (index: number) => void;
 };
 
 const Item: React.FC<ItemProps> = ({
-  todo,
+  item,
   index,
   switchDone,
   removeListItem,
 }) => {
   return (
     <li className="list-item">
+      <div className="information-div">
+        <p>{item.text}</p>
+        <div className="price-div">
+          <input type="number" />
+          <p>SEK</p>
+        </div>
+      </div>
       <div className="btn-div">
-        {!todo.done ? (
+        {!item.done ? (
           <button className="done-btn" onClick={() => switchDone(index)}>
             <Check className="icon" />
           </button>
@@ -32,7 +39,6 @@ const Item: React.FC<ItemProps> = ({
           <Close className="icon" />
         </button>
       </div>
-      <p>{todo.text}</p>
     </li>
   );
 };

@@ -2,13 +2,17 @@ import React from "react";
 import { useState, useEffect } from "react";
 import Item from "./Item";
 import AddItemPopup from "./AddItemPopup";
+import AddStorePopup from "./AddStorePopup";
 import Add from "@mui/icons-material/Add";
+import Settings from "@mui/icons-material/Settings";
 
 import { itemI } from "@/interfaces/todoI";
 
 const ItemsList = () => {
   const [items, setItems] = useState<itemI[]>([]);
+  const [stores, setStores] = useState<string[]>([]);
   const [showPopup, setShowPopup] = useState<boolean>(false);
+  const [showStorePopup, setShowStorePopup] = useState<boolean>(false);
   const [firstRender, setFirstRender] = useState<boolean>(true); // To prevent the first render of the site to overwrite the local storage with an empty array.
   const [sortOption, setSortOption] = useState<string>("date");
 
@@ -35,7 +39,11 @@ const ItemsList = () => {
     setShowPopup(!showPopup);
   };
 
-  const addTodo = (newItem: itemI) => {
+  const toggleStorePopup = () => {
+    setShowStorePopup(!showStorePopup);
+  };
+
+  const addItem = (newItem: itemI) => {
     newItem.date = new Date().toISOString();
     const newItems = [...items];
     newItems.push(newItem);
@@ -53,6 +61,13 @@ const ItemsList = () => {
     let newItems = [...items];
     newItems.splice(index, 1);
     setItems(newItems);
+  };
+
+  const addStore = (store: string) => {
+    // newItem.date = new Date().toISOString();
+    const newStores = [...stores];
+    newStores.push(store);
+    setStores(newStores);
   };
 
   const sortingFunction = (option: string, itemsArray: itemI[]) => {
@@ -78,18 +93,44 @@ const ItemsList = () => {
 
   return (
     <>
-      {showPopup && <AddItemPopup onClose={togglePopup} addTodo={addTodo} />}
+      {showPopup && <AddItemPopup onClose={togglePopup} addItem={addItem} />}
+      {showStorePopup && (
+        <AddStorePopup
+          onClose={toggleStorePopup}
+          addStore={addStore}
+          stores={stores}
+        />
+      )}
       <div className="lists-container">
+        <div className="select-container">
+          <div>
+            <select
+              className="sorting-select"
+              value={sortOption}
+              onChange={handleSortChange}
+            >
+              <option value="date">Last changed</option>
+              <option value="alphabetical">Alphabetical</option>
+            </select>
+          </div>
+          <div>
+            <select
+              className="store-select"
+              // value={sortOption}
+              // onChange={handleSortChange}
+            >
+              <option value="">Select store</option>
+              {stores.map((store) => {
+                return <option>{store}</option>;
+              })}
+            </select>
+            <button className="add-store-btn" onClick={toggleStorePopup}>
+              <Settings className="icon" />
+            </button>
+          </div>
+        </div>
         <div className="list-header-container">
-          <h2>Todos:</h2>
-          <select
-            className="sorting-select"
-            value={sortOption}
-            onChange={handleSortChange}
-          >
-            <option value="date">Last changed</option>
-            <option value="alphabetical">Alphabetical</option>
-          </select>
+          <h2>To shop:</h2>
           <button className="add-new-btn" onClick={togglePopup}>
             <Add className="icon" />
           </button>
@@ -98,7 +139,7 @@ const ItemsList = () => {
           {items.map((item, index) =>
             !item.done ? (
               <Item
-                todo={item}
+                item={item}
                 key={index}
                 index={index}
                 switchDone={switchDone}
@@ -114,7 +155,7 @@ const ItemsList = () => {
           {items.map((item, index) =>
             item.done ? (
               <Item
-                todo={item}
+                item={item}
                 key={index}
                 index={index}
                 switchDone={switchDone}
