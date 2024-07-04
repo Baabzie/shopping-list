@@ -2,9 +2,10 @@ import React from "react";
 import { useState, useEffect } from "react";
 import Item from "./Item";
 import AddItemPopup from "./AddItemPopup";
-import AddStorePopup from "./AddStorePopup";
+import EditStoresPopup from "./EditStoresPopup";
 import Add from "@mui/icons-material/Add";
 import Settings from "@mui/icons-material/Settings";
+import styles from "./ItemsList.module.scss";
 
 import { itemI } from "@/interfaces/todoI";
 
@@ -95,17 +96,17 @@ const ItemsList = () => {
     <>
       {showPopup && <AddItemPopup onClose={togglePopup} addItem={addItem} />}
       {showStorePopup && (
-        <AddStorePopup
+        <EditStoresPopup
           onClose={toggleStorePopup}
           addStore={addStore}
           stores={stores}
         />
       )}
-      <div className="lists-container">
-        <div className="select-container">
+      <div className={styles["list-container"]}>
+        <div className={styles["select-container"]}>
           <div>
             <select
-              className="sorting-select"
+              className={styles["sorting-select"]}
               value={sortOption}
               onChange={handleSortChange}
             >
@@ -115,7 +116,7 @@ const ItemsList = () => {
           </div>
           <div>
             <select
-              className="store-select"
+              className={styles["store-select"]}
               // value={sortOption}
               // onChange={handleSortChange}
             >
@@ -124,18 +125,21 @@ const ItemsList = () => {
                 return <option>{store}</option>;
               })}
             </select>
-            <button className="add-store-btn" onClick={toggleStorePopup}>
+            <button
+              className={styles["add-store-btn"]}
+              onClick={toggleStorePopup}
+            >
               <Settings className="icon" />
             </button>
           </div>
         </div>
-        <div className="list-header-container">
+        <div className={styles["list-header-container"]}>
           <h2>To shop:</h2>
-          <button className="add-new-btn" onClick={togglePopup}>
+          <button className={styles["add-new-btn"]} onClick={togglePopup}>
             <Add className="icon" />
           </button>
         </div>
-        <ul className="todo-list">
+        <ul>
           {items.map((item, index) =>
             !item.done ? (
               <Item
@@ -148,10 +152,10 @@ const ItemsList = () => {
             ) : null
           )}
         </ul>
-        <div className="list-header-container">
+        <div className={styles["list-header-container"]}>
           <h2>Completed:</h2>
         </div>
-        <ul className="done-list">
+        <ul>
           {items.map((item, index) =>
             item.done ? (
               <Item

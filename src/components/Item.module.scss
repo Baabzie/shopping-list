@@ -1,0 +1,46 @@
+.list-item {
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  p {
+    margin: 0;
+  }
+}
+
+.information-div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  .price-div {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    input {
+      text-align: center;
+      width: 42px;
+      border: 1px solid rgb(147, 147, 147);
+      padding: 6px 6px;
+      border-radius: 4px;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      @media (max-width: 600px) and (max-height: 900px) {
+        // width: 28px;
+      }
+    }
+  }
+}
+
+.btn-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}

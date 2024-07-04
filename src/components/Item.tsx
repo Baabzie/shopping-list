@@ -2,6 +2,7 @@ import { itemI } from "@/interfaces/todoI";
 import Check from "@mui/icons-material/Check";
 import Close from "@mui/icons-material/Close";
 import Restore from "@mui/icons-material/Restore";
+import styles from "./Item.module.scss";
 
 type ItemProps = {
   item: itemI;
@@ -17,15 +18,15 @@ const Item: React.FC<ItemProps> = ({
   removeListItem,
 }) => {
   return (
-    <li className="list-item">
-      <div className="information-div">
+    <li className={styles["list-item"]}>
+      <div className={styles["information-div"]}>
         <p>{item.text}</p>
-        <div className="price-div">
+        <div className={styles["price-div"]}>
           <input type="number" />
           <p>SEK</p>
         </div>
       </div>
-      <div className="btn-div">
+      <div className={styles["btn-div"]}>
         {!item.done ? (
           <button className="done-btn" onClick={() => switchDone(index)}>
             <Check className="icon" />

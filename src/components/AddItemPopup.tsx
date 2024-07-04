@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect, useRef } from "react";
 import Add from "@mui/icons-material/Add";
 import Close from "@mui/icons-material/Close";
+import styles from "./AddItemPopup.module.scss";
 
 import { itemI } from "@/interfaces/todoI";
 
@@ -55,8 +56,8 @@ const AddItemPopup: React.FC<AddItemPopupProps> = ({ onClose, addItem }) => {
   };
 
   return (
-    <div className="popup-container">
-      <div className="popup" ref={popupRef}>
+    <div className={styles["popup-container"]}>
+      <div className={styles["popup"]} ref={popupRef}>
         <h3>Add New Item</h3>
         <input
           type="text"
@@ -65,7 +66,7 @@ const AddItemPopup: React.FC<AddItemPopupProps> = ({ onClose, addItem }) => {
           onKeyDown={handleKeyPress}
           ref={inputRef}
         />
-        <div className="btn-div">
+        <div className={styles["btn-div"]}>
           <button className="add-btn" onClick={handleAddBtn}>
             <Add className="icon" />
           </button>

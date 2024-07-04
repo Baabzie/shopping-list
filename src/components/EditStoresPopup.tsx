@@ -2,14 +2,15 @@ import React from "react";
 import { useState, useEffect, useRef } from "react";
 import Add from "@mui/icons-material/Add";
 import Close from "@mui/icons-material/Close";
+import styles from "./EditStoresPopup.module.scss";
 
-type AddStorePopupProps = {
+type EditStoresPopupProps = {
   onClose: () => void;
   addStore: (store: string) => void;
   stores: string[];
 };
 
-const AddStorePopup: React.FC<AddStorePopupProps> = ({
+const EditStoresPopup: React.FC<EditStoresPopupProps> = ({
   onClose,
   addStore,
   stores,
@@ -58,8 +59,8 @@ const AddStorePopup: React.FC<AddStorePopupProps> = ({
   };
 
   return (
-    <div className="popup-container">
-      <div className="popup" ref={popupRef}>
+    <div className={styles["popup-container"]}>
+      <div className={styles["popup"]} ref={popupRef}>
         <h3>Add Store</h3>
         <input
           type="text"
@@ -68,7 +69,7 @@ const AddStorePopup: React.FC<AddStorePopupProps> = ({
           onKeyDown={handleKeyPress}
           ref={inputRef}
         />
-        <div className="btn-div">
+        <div className={styles["btn-div"]}>
           <button className="add-btn" onClick={handleAddBtn}>
             <Add className="icon" />
           </button>
@@ -81,4 +82,4 @@ const AddStorePopup: React.FC<AddStorePopupProps> = ({
   );
 };
 
-export default AddStorePopup;
+export default EditStoresPopup;
