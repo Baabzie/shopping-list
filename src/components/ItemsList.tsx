@@ -26,6 +26,14 @@ const ItemsList = () => {
   }, []);
 
   useEffect(() => {
+    let storedStores = localStorage.getItem("stores");
+    if (storedStores) {
+      let storesArray: string[] = JSON.parse(storedStores);
+      setStores(storesArray);
+    }
+  }, []);
+
+  useEffect(() => {
     // If "firstRender" is true we wont change local storage...
     if (!firstRender) {
       let itemsArray = [...items];
@@ -35,6 +43,15 @@ const ItemsList = () => {
     // ...and then we set "firstRender" to false so we after the initial render actually change the local storage.
     setFirstRender(false);
   }, [items, firstRender]);
+
+  useEffect(() => {
+    if (!firstRender) {
+      let storesArray = [...stores];
+      localStorage.setItem("stores", JSON.stringify(storesArray));
+      return;
+    }
+    setFirstRender(false);
+  }, [stores, firstRender]);
 
   const togglePopup = () => {
     setShowPopup(!showPopup);
