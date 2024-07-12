@@ -65,9 +65,14 @@ const ItemsList = () => {
   };
 
   const addStore = (store: string) => {
-    // newItem.date = new Date().toISOString();
     const newStores = [...stores];
     newStores.push(store);
+    setStores(newStores);
+  };
+
+  const removeStore = (i: number) => {
+    const newStores = [...stores];
+    newStores.splice(i, 1);
     setStores(newStores);
   };
 
@@ -99,6 +104,7 @@ const ItemsList = () => {
         <EditStoresPopup
           onClose={toggleStorePopup}
           addStore={addStore}
+          removeStore={removeStore}
           stores={stores}
         />
       )}

@@ -7,12 +7,14 @@ import styles from "./EditStoresPopup.module.scss";
 type EditStoresPopupProps = {
   onClose: () => void;
   addStore: (store: string) => void;
+  removeStore: (i: number) => void;
   stores: string[];
 };
 
 const EditStoresPopup: React.FC<EditStoresPopupProps> = ({
   onClose,
   addStore,
+  removeStore,
   stores,
 }) => {
   const [inputValue, setInputValue] = useState<string>("");
@@ -48,8 +50,12 @@ const EditStoresPopup: React.FC<EditStoresPopupProps> = ({
   const handleAddBtn = () => {
     if (inputValue.length > 0) {
       addStore(inputValue);
-      onClose();
+      setInputValue("");
     }
+  };
+
+  const handleRemoveBtn = (i: number) => {
+    removeStore(i);
   };
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -60,21 +66,42 @@ const EditStoresPopup: React.FC<EditStoresPopupProps> = ({
 
   return (
     <div className={styles["popup-container"]}>
+      {/* <div className={styles["close-btn-div"]}>
+        <button className="close-btn" onClick={onClose}>
+          <Close className="icon" />
+        </button>
+      </div> */}
       <div className={styles["popup"]} ref={popupRef}>
-        <h3>Add Store</h3>
-        <input
-          type="text"
-          value={inputValue}
-          onChange={handleInputChange}
-          onKeyDown={handleKeyPress}
-          ref={inputRef}
-        />
+        <h3>Stores:</h3>
+        <ul className={styles["store-list"]}>
+          {stores.map((store, i) => {
+            return (
+              <li>
+                <p>{store}</p>
+                <button
+                  className="remove-btn"
+                  onClick={() => handleRemoveBtn(i)}
+                >
+                  <Close className="icon" />
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+        {/* <h3>Add Store</h3> */}
+        <label>
+          Add new store:
+          <input
+            type="text"
+            value={inputValue}
+            onChange={handleInputChange}
+            onKeyDown={handleKeyPress}
+            ref={inputRef}
+          />
+        </label>
         <div className={styles["btn-div"]}>
           <button className="add-btn" onClick={handleAddBtn}>
             <Add className="icon" />
-          </button>
-          <button className="close-btn" onClick={onClose}>
-            <Close className="icon" />
           </button>
         </div>
       </div>
