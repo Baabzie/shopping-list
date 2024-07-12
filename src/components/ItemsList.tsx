@@ -93,15 +93,15 @@ const ItemsList = () => {
         },
       };
 
-      // console.log("New History:", newHistory);
-
       if (!newItems[index].history) {
         newItems[index].history = [];
       }
 
       newItems[index].history.push(newHistory);
-
-      // console.log("Updated Items:", newItems);
+      newItems[index].history.sort(
+        (a, b) =>
+          new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+      );
     }
 
     setItems(sortingFunction(sortOption, newItems));
@@ -214,6 +214,8 @@ const ItemsList = () => {
                 itemBought={itemBought}
                 switchDone={switchDone}
                 removeListItem={removeListItem}
+                stores={stores}
+                activeStore={activeStore}
               />
             ) : null
           )}
@@ -231,6 +233,8 @@ const ItemsList = () => {
                 itemBought={itemBought}
                 switchDone={switchDone}
                 removeListItem={removeListItem}
+                stores={stores}
+                activeStore={activeStore}
               />
             ) : null
           )}
