@@ -16,6 +16,7 @@ const ItemsList = () => {
   const [showStorePopup, setShowStorePopup] = useState<boolean>(false);
   const [firstRender, setFirstRender] = useState<boolean>(true); // To prevent the first render of the site to overwrite the local storage with an empty array.
   const [sortOption, setSortOption] = useState<string>("date");
+  const [activeStore, setActiveStore] = useState<string>("");
 
   useEffect(() => {
     let storedItems = localStorage.getItem("items");
@@ -114,6 +115,15 @@ const ItemsList = () => {
     setItems(sortingFunction(selectedOption, items));
   };
 
+  const handleStoreChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedOption = event.target.value;
+    setActiveStore(selectedOption);
+  };
+
+  // useEffect(() => {
+  //   console.log(activeStore);
+  // }, [activeStore]);
+
   return (
     <>
       {showPopup && <AddItemPopup onClose={togglePopup} addItem={addItem} />}
@@ -140,12 +150,13 @@ const ItemsList = () => {
           <div>
             <select
               className={styles["store-select"]}
+              onChange={handleStoreChange}
               // value={sortOption}
               // onChange={handleSortChange}
             >
               <option value="">Select store</option>
               {stores.map((store) => {
-                return <option>{store}</option>;
+                return <option value={store}>{store}</option>;
               })}
             </select>
             <button
