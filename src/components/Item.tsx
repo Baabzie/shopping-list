@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 type ItemProps = {
   item: itemI;
   index: number;
+  itemBought: (index: number, price: number) => void;
   switchDone: (index: number) => void;
   removeListItem: (index: number) => void;
 };
@@ -15,6 +16,7 @@ type ItemProps = {
 const Item: React.FC<ItemProps> = ({
   item,
   index,
+  itemBought,
   switchDone,
   removeListItem,
 }) => {
@@ -63,15 +65,17 @@ const Item: React.FC<ItemProps> = ({
         )}
       </div>
       <div className={styles["btn-div"]}>
-        {!item.done ? (
-          <button className="done-btn" onClick={() => switchDone(index)}>
+        {!item.done && (
+          <button
+            className="done-btn"
+            onClick={() => itemBought(index, pricePerUnit)}
+          >
             <Check className="icon" />
           </button>
-        ) : (
-          <button className="not-done-btn" onClick={() => switchDone(index)}>
-            <Restore className="icon" />
-          </button>
         )}
+        <button className="not-done-btn" onClick={() => switchDone(index)}>
+          <Restore className="icon" />
+        </button>
         <button className="remove-btn" onClick={() => removeListItem(index)}>
           <Close className="icon" />
         </button>

@@ -76,6 +76,37 @@ const ItemsList = () => {
     setItems(sortingFunction(sortOption, newItems));
   };
 
+  const itemBought = (index: number, price: number) => {
+    let newItems = [...items];
+    newItems[index] = {
+      ...newItems[index],
+      date: new Date().toISOString(),
+      done: true,
+    };
+
+    if (activeStore !== "") {
+      const newHistory = {
+        store: activeStore,
+        data: {
+          price: price,
+          date: new Date().toISOString(),
+        },
+      };
+
+      // console.log("New History:", newHistory);
+
+      if (!newItems[index].history) {
+        newItems[index].history = [];
+      }
+
+      newItems[index].history.push(newHistory);
+
+      // console.log("Updated Items:", newItems);
+    }
+
+    setItems(sortingFunction(sortOption, newItems));
+  };
+
   const removeListItem = (index: number) => {
     let newItems = [...items];
     newItems.splice(index, 1);
@@ -180,6 +211,7 @@ const ItemsList = () => {
                 item={item}
                 key={index}
                 index={index}
+                itemBought={itemBought}
                 switchDone={switchDone}
                 removeListItem={removeListItem}
               />
@@ -196,6 +228,7 @@ const ItemsList = () => {
                 item={item}
                 key={index}
                 index={index}
+                itemBought={itemBought}
                 switchDone={switchDone}
                 removeListItem={removeListItem}
               />
