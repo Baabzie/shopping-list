@@ -76,7 +76,7 @@ const EditStoresPopup: React.FC<EditStoresPopupProps> = ({
         <ul className={styles["store-list"]}>
           {stores.map((store, i) => {
             return (
-              <li>
+              <li key={i + store}>
                 <p>{store}</p>
                 <button
                   className="remove-btn"

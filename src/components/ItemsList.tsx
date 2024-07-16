@@ -223,8 +223,12 @@ const ItemsList = () => {
               // onChange={handleSortChange}
             >
               <option value="">Select store</option>
-              {stores.map((store) => {
-                return <option value={store}>{store}</option>;
+              {stores.map((store, i) => {
+                return (
+                  <option key={i + store} value={store}>
+                    {store}
+                  </option>
+                );
               })}
             </select>
             <button
