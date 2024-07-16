@@ -127,7 +127,7 @@ const Item: React.FC<ItemProps> = ({
             </p>
           )
         ) : (
-          <p>Can't predict lowest price.</p>
+          <p>Can&apos;t predict lowest price.</p>
         )}
         {cheapestPrice > 0 && storePrice - cheapestPrice > 0 ? (
           <p className={styles["red"]}>
