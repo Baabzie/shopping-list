@@ -1,13 +1,16 @@
-.lists-container {
+.list-container {
   margin: 0 auto;
   min-width: 300px;
-  padding: 20px;
+  // padding: 20px;
   ul {
     list-style: none;
     padding: 0;
     li {
       margin-bottom: 5px;
     }
+  }
+  @media (max-width: 600px) {
+    width: 100%;
   }
 }
 

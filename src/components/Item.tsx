@@ -25,9 +25,9 @@ const Item: React.FC<ItemProps> = ({
   activeStore,
 }) => {
   const [price, setPrice] = useState<number>(0);
+  const [storePrice, setStorePrice] = useState<number>(0);
   const [quantity, setQuantity] = useState<number>(1);
   const [pricePerUnit, setPricePerUnit] = useState<number>(0);
-  const [storePrice, setStorePrice] = useState<number>(0);
   const [cheapestPrice, setCheapestPrice] = useState<number>(0);
   const [cheapestStore, setCheapestStore] = useState<string>("");
 
@@ -45,9 +45,11 @@ const Item: React.FC<ItemProps> = ({
       item.history.some((dataPoint) => {
         if (dataPoint.store === activeStore) {
           setStorePrice(dataPoint.data.price);
+          setPrice(dataPoint.data.price);
           return true; // Exit the loop early
         }
         setStorePrice(0);
+        setPrice(0);
         return false;
       });
     }
@@ -80,7 +82,7 @@ const Item: React.FC<ItemProps> = ({
     <li className={styles["list-item"]}>
       <div className={styles["information-div"]}>
         <p>{item.text}</p>
-        {!item.done && (
+        {!item.done && activeStore !== "" ? (
           <div className={styles["price-div"]}>
             <input
               onChange={handlePriceChange}
@@ -99,7 +101,7 @@ const Item: React.FC<ItemProps> = ({
             <p>{pricePerUnit}</p>
             <p>SEK</p>
           </div>
-        )}
+        ) : null}
         {activeStore !== "" &&
           (storePrice > 0 ? (
             <p>
@@ -109,12 +111,21 @@ const Item: React.FC<ItemProps> = ({
             <p>No known price at {activeStore}</p>
           ))}
         {cheapestStore !== "" && cheapestPrice !== 0 ? (
-          <p>
-            Cheapest at {cheapestStore} at {cheapestPrice} SEK
-          </p>
+          cheapestStore === activeStore ? (
+            <p>This is the place with the lowest known price.</p>
+          ) : (
+            <p>
+              Lowest known price at {cheapestStore} for {cheapestPrice} SEK
+            </p>
+          )
         ) : (
-          <p>Dont know where is cheap</p>
+          <p>Can't predict lowest price.</p>
         )}
+        {cheapestPrice > 0 && storePrice - cheapestPrice > 0 ? (
+          <p className={styles["difference"]}>
+            You could save {storePrice - cheapestPrice} SEK
+          </p>
+        ) : null}
       </div>
       <div className={styles["btn-div"]}>
         {!item.done && (

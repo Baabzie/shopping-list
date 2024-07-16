@@ -85,27 +85,32 @@ const ItemsList = () => {
     };
 
     if (activeStore !== "") {
-      const newHistory = {
-        store: activeStore,
-        data: {
-          price: price,
-          date: new Date().toISOString(),
-        },
-      };
+      if (price !== 0) {
+        const newHistory = {
+          store: activeStore,
+          data: {
+            price: price,
+            date: new Date().toISOString(),
+          },
+        };
 
-      if (!newItems[index].history) {
-        newItems[index].history = [];
+        if (!newItems[index].history) {
+          newItems[index].history = [];
+        }
+
+        newItems[index].history = newItems[index].history.filter(
+          (history) => history.store !== activeStore
+        );
+
+        newItems[index].history.push(newHistory);
+        newItems[index].history.sort(
+          (a, b) =>
+            new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+        );
+      } else {
+        alert("Price cannot be zero.");
+        return; // Stop execution
       }
-
-      newItems[index].history = newItems[index].history.filter(
-        (history) => history.store !== activeStore
-      );
-
-      newItems[index].history.push(newHistory);
-      newItems[index].history.sort(
-        (a, b) =>
-          new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
-      );
     }
 
     setItems(sortingFunction(sortOption, newItems));
@@ -158,6 +163,10 @@ const ItemsList = () => {
   // useEffect(() => {
   //   console.log(activeStore);
   // }, [activeStore]);
+
+  useEffect(() => {
+    console.log(items);
+  }, [items]);
 
   return (
     <>
@@ -213,7 +222,7 @@ const ItemsList = () => {
             !item.done ? (
               <Item
                 item={item}
-                key={index}
+                key={index + item.text}
                 index={index}
                 itemBought={itemBought}
                 switchDone={switchDone}
@@ -232,7 +241,7 @@ const ItemsList = () => {
             item.done ? (
               <Item
                 item={item}
-                key={index}
+                key={index + item.text}
                 index={index}
                 itemBought={itemBought}
                 switchDone={switchDone}
