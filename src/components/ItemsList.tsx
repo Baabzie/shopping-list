@@ -97,6 +97,10 @@ const ItemsList = () => {
         newItems[index].history = [];
       }
 
+      newItems[index].history = newItems[index].history.filter(
+        (history) => history.store !== activeStore
+      );
+
       newItems[index].history.push(newHistory);
       newItems[index].history.sort(
         (a, b) =>

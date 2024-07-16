@@ -49,5 +49,8 @@
   width: 42px;
 }
 .quantity-input {
-  width: 18px;
+  width: 32px;
+  @media (max-width: 600px) {
+    width: 18px;
+  }
 }
