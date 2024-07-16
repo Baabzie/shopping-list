@@ -77,20 +77,14 @@ const Item: React.FC<ItemProps> = ({
 
   const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseFloat(event.target.value);
-    if (!isNaN(value)) {
-      setPrice(value);
-    } else {
-      setPrice(0);
-    }
+
+    setPrice(value);
   };
 
   const handleQuantityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseFloat(event.target.value);
-    if (!isNaN(value)) {
-      setQuantity(value);
-    } else {
-      setQuantity(1);
-    }
+
+    setQuantity(value);
   };
 
   return (
@@ -112,7 +106,11 @@ const Item: React.FC<ItemProps> = ({
               type="number"
               value={quantity}
             />
-            <p>= {pricePerUnit.toFixed(2)} SEK</p>
+            {!isNaN(quantity) && !isNaN(price) ? (
+              <p>= {pricePerUnit.toFixed(2)} SEK</p>
+            ) : (
+              <p> {`(please enter numbers)`}</p>
+            )}
           </div>
         ) : null}
         {activeStore !== "" &&

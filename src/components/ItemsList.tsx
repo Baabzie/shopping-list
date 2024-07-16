@@ -90,7 +90,12 @@ const ItemsList = () => {
     };
 
     if (activeStore !== "") {
-      if (price !== 0) {
+      if (
+        price !== 0 &&
+        quantity !== 0 &&
+        !isNaN(quantityPrice) &&
+        !isNaN(quantity)
+      ) {
         const newHistory = {
           store: activeStore,
           data: {
@@ -115,7 +120,7 @@ const ItemsList = () => {
             new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
         );
       } else {
-        alert("Price cannot be zero.");
+        alert("Price and quantity cannot be zero.");
         return; // Stop execution
       }
     }
