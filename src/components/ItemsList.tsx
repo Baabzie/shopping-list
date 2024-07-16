@@ -129,9 +129,26 @@ const ItemsList = () => {
   };
 
   const removeStore = (i: number) => {
+    const storeToRemove = stores[i];
     const newStores = [...stores];
     newStores.splice(i, 1);
+
+    // Remove the store from the stores array
     setStores(newStores);
+
+    // Remove the store from the history of each item in the items array
+    const newItems = items.map((item) => {
+      if (item.history) {
+        const updatedHistory = item.history.filter(
+          (history) => history.store !== storeToRemove
+        );
+        return { ...item, history: updatedHistory };
+      }
+      return item;
+    });
+
+    // Update the items state with the newItems array
+    setItems(newItems);
   };
 
   const sortingFunction = (option: string, itemsArray: itemI[]) => {

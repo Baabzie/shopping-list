@@ -88,7 +88,7 @@ const Item: React.FC<ItemProps> = ({
               onChange={handlePriceChange}
               className={styles["price-input"]}
               type="number"
-              value={price}
+              value={price.toFixed(2)}
             />
             <p>/</p>
             <input
@@ -112,7 +112,9 @@ const Item: React.FC<ItemProps> = ({
           ))}
         {cheapestStore !== "" && cheapestPrice !== 0 ? (
           cheapestStore === activeStore ? (
-            <p>This is the place with the lowest known price.</p>
+            <p className={styles["green"]}>
+              This is the place with the lowest known price.
+            </p>
           ) : (
             <p>
               Lowest known price at {cheapestStore} for{" "}
@@ -123,8 +125,9 @@ const Item: React.FC<ItemProps> = ({
           <p>Can't predict lowest price.</p>
         )}
         {cheapestPrice > 0 && storePrice - cheapestPrice > 0 ? (
-          <p className={styles["difference"]}>
-            You could save {(storePrice - cheapestPrice).toFixed(2)} SEK
+          <p className={styles["red"]}>
+            You shop this at {cheapestStore} and save{" "}
+            {(storePrice - cheapestPrice).toFixed(2)} SEK
           </p>
         ) : null}
       </div>
