@@ -8,7 +8,12 @@ import { useState, useEffect } from "react";
 type ItemProps = {
   item: itemI;
   index: number;
-  itemBought: (index: number, price: number) => void;
+  itemBought: (
+    index: number,
+    price: number,
+    quantity: number,
+    quantityPrice: number
+  ) => void;
   switchDone: (index: number) => void;
   removeListItem: (index: number) => void;
   stores: string[];
@@ -45,11 +50,13 @@ const Item: React.FC<ItemProps> = ({
       item.history.some((dataPoint) => {
         if (dataPoint.store === activeStore) {
           setStorePrice(dataPoint.data.price);
-          setPrice(dataPoint.data.price);
+          setPrice(dataPoint.data.latestQuantityPrice);
+          setQuantity(dataPoint.data.latestQuantity);
           return true; // Exit the loop early
         }
         setStorePrice(0);
         setPrice(0);
+        setQuantity(1);
         return false;
       });
     }
@@ -97,9 +104,7 @@ const Item: React.FC<ItemProps> = ({
               type="number"
               value={quantity}
             />
-            <p>=</p>
-            <p>{pricePerUnit.toFixed(2)}</p>
-            <p>SEK</p>
+            <p>= {pricePerUnit.toFixed(2)} SEK</p>
           </div>
         ) : null}
         {activeStore !== "" &&
@@ -117,7 +122,7 @@ const Item: React.FC<ItemProps> = ({
             </p>
           ) : (
             <p>
-              Lowest known price at {cheapestStore} for{" "}
+              Lowest known price is at {cheapestStore} for{" "}
               {cheapestPrice.toFixed(2)} SEK
             </p>
           )
@@ -126,7 +131,7 @@ const Item: React.FC<ItemProps> = ({
         )}
         {cheapestPrice > 0 && storePrice - cheapestPrice > 0 ? (
           <p className={styles["red"]}>
-            You shop this at {cheapestStore} and save{" "}
+            You can shop this at {cheapestStore} and save{" "}
             {(storePrice - cheapestPrice).toFixed(2)} SEK
           </p>
         ) : null}
@@ -135,7 +140,7 @@ const Item: React.FC<ItemProps> = ({
         {!item.done && (
           <button
             className="done-btn"
-            onClick={() => itemBought(index, pricePerUnit)}
+            onClick={() => itemBought(index, pricePerUnit, quantity, price)}
           >
             <Check className="icon" />
           </button>

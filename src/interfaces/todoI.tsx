@@ -1,6 +1,11 @@
 interface historyI {
   store: string;
-  data: { price: number; date: string };
+  data: {
+    price: number;
+    latestQuantity: number;
+    latestQuantityPrice: number;
+    date: string;
+  };
 }
 
 export interface itemI {

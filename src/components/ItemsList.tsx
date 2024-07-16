@@ -76,7 +76,12 @@ const ItemsList = () => {
     setItems(sortingFunction(sortOption, newItems));
   };
 
-  const itemBought = (index: number, price: number) => {
+  const itemBought = (
+    index: number,
+    price: number,
+    quantity: number,
+    quantityPrice: number
+  ) => {
     let newItems = [...items];
     newItems[index] = {
       ...newItems[index],
@@ -90,6 +95,8 @@ const ItemsList = () => {
           store: activeStore,
           data: {
             price: price,
+            latestQuantity: quantity,
+            latestQuantityPrice: quantityPrice,
             date: new Date().toISOString(),
           },
         };
