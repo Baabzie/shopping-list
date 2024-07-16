@@ -76,13 +76,21 @@ const Item: React.FC<ItemProps> = ({
   }, [activeStore, item.history]); // Ensure item.history is included as a dependency
 
   const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    let value = parseFloat(event.target.value);
-    setPrice(value);
+    const value = parseFloat(event.target.value);
+    if (!isNaN(value)) {
+      setPrice(value);
+    } else {
+      setPrice(0);
+    }
   };
 
   const handleQuantityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseFloat(event.target.value);
-    setQuantity(value);
+    if (!isNaN(value)) {
+      setQuantity(value);
+    } else {
+      setQuantity(1);
+    }
   };
 
   return (
@@ -95,7 +103,7 @@ const Item: React.FC<ItemProps> = ({
               onChange={handlePriceChange}
               className={styles["price-input"]}
               type="number"
-              value={price.toFixed(2)}
+              value={price}
             />
             <p>/</p>
             <input
@@ -110,10 +118,10 @@ const Item: React.FC<ItemProps> = ({
         {activeStore !== "" &&
           (storePrice > 0 ? (
             <p>
-              Latest known price at {activeStore}: {storePrice.toFixed(2)} SEK
+              Latest known price at {activeStore}: {storePrice.toFixed(2)} SEK.
             </p>
           ) : (
-            <p>No known price at {activeStore}</p>
+            <p>No known price at {activeStore}.</p>
           ))}
         {cheapestStore !== "" && cheapestPrice !== 0 ? (
           cheapestStore === activeStore ? (
@@ -123,7 +131,7 @@ const Item: React.FC<ItemProps> = ({
           ) : (
             <p>
               Lowest known price is at {cheapestStore} for{" "}
-              {cheapestPrice.toFixed(2)} SEK
+              {cheapestPrice.toFixed(2)} SEK.
             </p>
           )
         ) : (
