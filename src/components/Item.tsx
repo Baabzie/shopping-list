@@ -98,14 +98,14 @@ const Item: React.FC<ItemProps> = ({
               value={quantity}
             />
             <p>=</p>
-            <p>{pricePerUnit}</p>
+            <p>{pricePerUnit.toFixed(2)}</p>
             <p>SEK</p>
           </div>
         ) : null}
         {activeStore !== "" &&
           (storePrice > 0 ? (
             <p>
-              Latest known price at {activeStore}: {storePrice} SEK
+              Latest known price at {activeStore}: {storePrice.toFixed(2)} SEK
             </p>
           ) : (
             <p>No known price at {activeStore}</p>
@@ -115,7 +115,8 @@ const Item: React.FC<ItemProps> = ({
             <p>This is the place with the lowest known price.</p>
           ) : (
             <p>
-              Lowest known price at {cheapestStore} for {cheapestPrice} SEK
+              Lowest known price at {cheapestStore} for{" "}
+              {cheapestPrice.toFixed(2)} SEK
             </p>
           )
         ) : (
@@ -123,7 +124,7 @@ const Item: React.FC<ItemProps> = ({
         )}
         {cheapestPrice > 0 && storePrice - cheapestPrice > 0 ? (
           <p className={styles["difference"]}>
-            You could save {storePrice - cheapestPrice} SEK
+            You could save {(storePrice - cheapestPrice).toFixed(2)} SEK
           </p>
         ) : null}
       </div>
