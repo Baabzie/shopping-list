@@ -17,6 +17,8 @@ const ItemsList = () => {
   const [firstRender, setFirstRender] = useState<boolean>(true); // To prevent the first render of the site to overwrite the local storage with an empty array.
   const [sortOption, setSortOption] = useState<string>("date");
   const [activeStore, setActiveStore] = useState<string>("");
+  const [activePassiveItemsAccordion, setActivePassiveItemsAccordion] =
+    useState<boolean>(false);
 
   useEffect(() => {
     let storedItems = localStorage.getItem("items");
@@ -74,6 +76,10 @@ const ItemsList = () => {
     newItems[index].date = new Date().toISOString();
     newItems[index].done = !newItems[index].done;
     setItems(sortingFunction(sortOption, newItems));
+  };
+
+  const openAccordion = () => {
+    setActivePassiveItemsAccordion((prevState) => !prevState);
   };
 
   const itemBought = (
@@ -266,25 +272,41 @@ const ItemsList = () => {
             ) : null
           )}
         </ul>
-        <div className={styles["list-header-container"]}>
-          <h2>Completed:</h2>
-        </div>
-        <ul>
-          {items.map((item, index) =>
-            item.done ? (
-              <Item
-                item={item}
-                key={index + item.text}
-                index={index}
-                itemBought={itemBought}
-                switchDone={switchDone}
-                removeListItem={removeListItem}
-                stores={stores}
-                activeStore={activeStore}
-              />
-            ) : null
-          )}
-        </ul>
+        {items.some((item) => item.done) && (
+          <div className={styles["accordion-div"]}>
+            <div className={styles["list-header-container"]}>
+              <button
+                className={styles["accordion-btn"]}
+                onClick={() => openAccordion()}
+              >
+                <h2>Saved items:</h2>
+                {activePassiveItemsAccordion ? (
+                  <p>Click to hide list</p>
+                ) : (
+                  <p>Click to see list</p>
+                )}
+              </button>
+            </div>
+            {activePassiveItemsAccordion && (
+              <ul>
+                {items.map((item, index) =>
+                  item.done ? (
+                    <Item
+                      item={item}
+                      key={index + item.text}
+                      index={index}
+                      itemBought={itemBought}
+                      switchDone={switchDone}
+                      removeListItem={removeListItem}
+                      stores={stores}
+                      activeStore={activeStore}
+                    />
+                  ) : null
+                )}
+              </ul>
+            )}
+          </div>
+        )}
       </div>
     </>
   );
