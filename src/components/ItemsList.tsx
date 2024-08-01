@@ -12,8 +12,6 @@ import { itemI } from "@/interfaces/todoI";
 
 const ItemsList = () => {
   const [items, setItems] = useState<itemI[]>([]);
-  const [filterString, setFilterString] = useState<string>("");
-  const [filteredItems, setFilteredItems] = useState<itemI[]>([]);
   const [stores, setStores] = useState<string[]>([]);
   const [showPopup, setShowPopup] = useState<boolean>(false);
   const [showStorePopup, setShowStorePopup] = useState<boolean>(false);
@@ -59,18 +57,6 @@ const ItemsList = () => {
     setFirstRender(false);
   }, [stores, firstRender]);
 
-  useEffect(() => {
-    if (filterString !== "") {
-      const lowerCaseFilter = filterString.toLowerCase();
-      const filteredArray = items.filter((item) =>
-        item.text.toLowerCase().includes(lowerCaseFilter)
-      );
-      setFilteredItems(filteredArray);
-    } else {
-      setFilteredItems(items);
-    }
-  }, [filterString, items]);
-
   const togglePopup = () => {
     setShowPopup(!showPopup);
   };
@@ -81,14 +67,21 @@ const ItemsList = () => {
 
   const addItem = (newItem: itemI) => {
     const newTextLower = newItem.text.toLowerCase();
-    const existingItem = items.find(
+    const existingItemIndex = items.findIndex(
       (item) => item.text.toLowerCase() === newTextLower
     );
 
-    if (existingItem) {
-      existingItem.done = false;
-      existingItem.date = new Date().toISOString();
+    if (existingItemIndex !== -1) {
+      // If an existing item is found, create a new array with the updated item
+      const updatedItems = [...items];
+      updatedItems[existingItemIndex] = {
+        ...updatedItems[existingItemIndex],
+        done: false,
+        date: new Date().toISOString(),
+      };
+      setItems(sortingFunction(sortOption, updatedItems));
     } else {
+      // If no existing item is found, add the new item
       newItem.date = new Date().toISOString();
       const newItems = [...items, newItem];
       setItems(sortingFunction(sortOption, newItems));
@@ -266,7 +259,7 @@ const ItemsList = () => {
             </button>
           </div>
         </div>
-        <SearchBar setFilterString={setFilterString} />
+        <SearchBar items={items} addItem={addItem} />
         <div className={styles["list-header-container"]}>
           <h2>To shop:</h2>
           <button className={styles["add-new-btn"]} onClick={togglePopup}>
@@ -274,7 +267,7 @@ const ItemsList = () => {
           </button>
         </div>
         <ul>
-          {filteredItems.map((item, index) =>
+          {items.map((item, index) =>
             !item.done ? (
               <Item
                 item={item}
@@ -289,7 +282,7 @@ const ItemsList = () => {
             ) : null
           )}
         </ul>
-        {filteredItems.some((item) => item.done) && (
+        {items.some((item) => item.done) && (
           <div className={styles["accordion-div"]}>
             <div className={styles["list-header-container"]}>
               <button
@@ -306,7 +299,7 @@ const ItemsList = () => {
             </div>
             {activePassiveItemsAccordion && (
               <ul>
-                {filteredItems.map((item, index) =>
+                {items.map((item, index) =>
                   item.done ? (
                     <Item
                       item={item}
