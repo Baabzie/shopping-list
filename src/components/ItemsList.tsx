@@ -59,6 +59,18 @@ const ItemsList = () => {
     setFirstRender(false);
   }, [stores, firstRender]);
 
+  useEffect(() => {
+    if (filterString !== "") {
+      const lowerCaseFilter = filterString.toLowerCase();
+      const filteredArray = items.filter((item) =>
+        item.text.toLowerCase().includes(lowerCaseFilter)
+      );
+      setFilteredItems(filteredArray);
+    } else {
+      setFilteredItems(items);
+    }
+  }, [filterString, items]);
+
   const togglePopup = () => {
     setShowPopup(!showPopup);
   };
@@ -68,10 +80,19 @@ const ItemsList = () => {
   };
 
   const addItem = (newItem: itemI) => {
-    newItem.date = new Date().toISOString();
-    const newItems = [...items];
-    newItems.push(newItem);
-    setItems(sortingFunction(sortOption, newItems));
+    const newTextLower = newItem.text.toLowerCase();
+    const existingItem = items.find(
+      (item) => item.text.toLowerCase() === newTextLower
+    );
+
+    if (existingItem) {
+      existingItem.done = false;
+      existingItem.date = new Date().toISOString();
+    } else {
+      newItem.date = new Date().toISOString();
+      const newItems = [...items, newItem];
+      setItems(sortingFunction(sortOption, newItems));
+    }
   };
 
   const switchDone = (index: number) => {
@@ -197,18 +218,6 @@ const ItemsList = () => {
     const selectedOption = event.target.value;
     setActiveStore(selectedOption);
   };
-
-  useEffect(() => {
-    if (filterString !== "") {
-      const lowerCaseFilter = filterString.toLowerCase();
-      const filteredArray = items.filter((item) =>
-        item.text.toLowerCase().includes(lowerCaseFilter)
-      );
-      setFilteredItems(filteredArray);
-    } else {
-      setFilteredItems(items);
-    }
-  }, [filterString, items]);
 
   return (
     <>
