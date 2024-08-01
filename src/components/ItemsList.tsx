@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Item from "./Item";
 import AddItemPopup from "./AddItemPopup";
 import EditStoresPopup from "./EditStoresPopup";
+import SearchBar from "./SearchBar";
 import Add from "@mui/icons-material/Add";
 import Settings from "@mui/icons-material/Settings";
 import styles from "./ItemsList.module.scss";
@@ -244,6 +245,7 @@ const ItemsList = () => {
             </button>
           </div>
         </div>
+        <SearchBar />
         <div className={styles["list-header-container"]}>
           <h2>To shop:</h2>
           <button className={styles["add-new-btn"]} onClick={togglePopup}>
