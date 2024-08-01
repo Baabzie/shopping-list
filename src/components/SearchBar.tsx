@@ -30,13 +30,21 @@ const SearchBar: React.FC<SearchProps> = ({ items, addItem }) => {
     setFilterString(event.target.value);
   };
 
-  const handleAddBtn = (item: itemI) => {
-    addItem(item);
+  const handleAddBtn = (text: string) => {
+    addItem({ text: text, done: false });
+    setFilterString(""); // Reset filter string
+    if (inputRef.current) {
+      inputRef.current.value = ""; // Clear the input field
+    }
   };
+
+  const isFilterStringInItems = filteredItems.some(
+    (item) => item.text.toLowerCase() === filterString.toLowerCase()
+  );
 
   return (
     <div className={styles["search-bar-container"]}>
-      <label htmlFor="search-input">Search:</label>
+      <label htmlFor="search-input">Add Item:</label>
       <input
         id="search-input"
         type="text"
@@ -44,20 +52,42 @@ const SearchBar: React.FC<SearchProps> = ({ items, addItem }) => {
         onChange={handleSearchInput}
       />
       <ul className={styles["filtered-list"]}>
-        {filteredItems.map((item) => {
-          return (
-            <li>
-              <p>{item.text}</p>
-              {!item.done ? (
+        {filteredItems.map((item) => (
+          <li key={item.text}>
+            <p>{item.text}</p>
+            {!item.done ? (
+              <div className={styles["information-div"]}>
                 <p>Already in cart</p>
-              ) : (
-                <button className="add-btn" onClick={() => handleAddBtn(item)}>
-                  <Add className="icon" />
-                </button>
-              )}
-            </li>
-          );
-        })}
+              </div>
+            ) : (
+              <>
+                <div className={styles["information-div"]}>
+                  <p>Add from saved items</p>
+                  <button
+                    className="add-btn"
+                    onClick={() => handleAddBtn(item.text)}
+                  >
+                    <Add className="icon" />
+                  </button>
+                </div>
+              </>
+            )}
+          </li>
+        ))}
+        {filterString !== "" && !isFilterStringInItems && (
+          <li>
+            <p>{filterString}</p>
+            <div className={styles["information-div"]}>
+              <p>Add new item</p>
+              <button
+                className="add-btn"
+                onClick={() => handleAddBtn(filterString)}
+              >
+                <Add className="icon" />
+              </button>
+            </div>
+          </li>
+        )}
       </ul>
     </div>
   );

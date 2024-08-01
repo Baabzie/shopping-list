@@ -1,8 +1,14 @@
 .search-bar-container {
   display: flex;
   flex-direction: column;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
   label {
     font-size: small;
+    margin: 10px;
   }
   input {
     border: 1px solid #ccc;
@@ -10,13 +16,22 @@
     height: 25px;
     margin-bottom: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 0 10px;
   }
 }
 
 .filtered-list {
+  // padding: 0 10px;
   li {
+    margin: 0 10px;
     display: flex;
     justify-content: space-between;
-    padding: 0 2rem 0 2rem;
+    .information-div {
+      // margin: 0 10px;
+      display: flex;
+      width: 70%;
+      gap: 1rem;
+      justify-content: space-between;
+    }
   }
 }
