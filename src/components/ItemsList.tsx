@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Item from "./Item";
 import AddItemPopup from "./AddItemPopup";
 import EditStoresPopup from "./EditStoresPopup";
+import SearchBar from "./SearchBar";
 import Add from "@mui/icons-material/Add";
 import Settings from "@mui/icons-material/Settings";
 import styles from "./ItemsList.module.scss";
@@ -11,6 +12,8 @@ import { itemI } from "@/interfaces/todoI";
 
 const ItemsList = () => {
   const [items, setItems] = useState<itemI[]>([]);
+  const [filterString, setFilterString] = useState<string>("");
+  const [filteredItems, setFilteredItems] = useState<itemI[]>([]);
   const [stores, setStores] = useState<string[]>([]);
   const [showPopup, setShowPopup] = useState<boolean>(false);
   const [showStorePopup, setShowStorePopup] = useState<boolean>(false);
@@ -56,6 +59,18 @@ const ItemsList = () => {
     setFirstRender(false);
   }, [stores, firstRender]);
 
+  useEffect(() => {
+    if (filterString !== "") {
+      const lowerCaseFilter = filterString.toLowerCase();
+      const filteredArray = items.filter((item) =>
+        item.text.toLowerCase().includes(lowerCaseFilter)
+      );
+      setFilteredItems(filteredArray);
+    } else {
+      setFilteredItems(items);
+    }
+  }, [filterString, items]);
+
   const togglePopup = () => {
     setShowPopup(!showPopup);
   };
@@ -65,10 +80,19 @@ const ItemsList = () => {
   };
 
   const addItem = (newItem: itemI) => {
-    newItem.date = new Date().toISOString();
-    const newItems = [...items];
-    newItems.push(newItem);
-    setItems(sortingFunction(sortOption, newItems));
+    const newTextLower = newItem.text.toLowerCase();
+    const existingItem = items.find(
+      (item) => item.text.toLowerCase() === newTextLower
+    );
+
+    if (existingItem) {
+      existingItem.done = false;
+      existingItem.date = new Date().toISOString();
+    } else {
+      newItem.date = new Date().toISOString();
+      const newItems = [...items, newItem];
+      setItems(sortingFunction(sortOption, newItems));
+    }
   };
 
   const switchDone = (index: number) => {
@@ -195,14 +219,6 @@ const ItemsList = () => {
     setActiveStore(selectedOption);
   };
 
-  // useEffect(() => {
-  //   console.log(activeStore);
-  // }, [activeStore]);
-
-  useEffect(() => {
-    console.log(items);
-  }, [items]);
-
   return (
     <>
       {showPopup && <AddItemPopup onClose={togglePopup} addItem={addItem} />}
@@ -250,6 +266,7 @@ const ItemsList = () => {
             </button>
           </div>
         </div>
+        <SearchBar setFilterString={setFilterString} />
         <div className={styles["list-header-container"]}>
           <h2>To shop:</h2>
           <button className={styles["add-new-btn"]} onClick={togglePopup}>
@@ -257,7 +274,7 @@ const ItemsList = () => {
           </button>
         </div>
         <ul>
-          {items.map((item, index) =>
+          {filteredItems.map((item, index) =>
             !item.done ? (
               <Item
                 item={item}
@@ -272,7 +289,7 @@ const ItemsList = () => {
             ) : null
           )}
         </ul>
-        {items.some((item) => item.done) && (
+        {filteredItems.some((item) => item.done) && (
           <div className={styles["accordion-div"]}>
             <div className={styles["list-header-container"]}>
               <button
@@ -289,7 +306,7 @@ const ItemsList = () => {
             </div>
             {activePassiveItemsAccordion && (
               <ul>
-                {items.map((item, index) =>
+                {filteredItems.map((item, index) =>
                   item.done ? (
                     <Item
                       item={item}
