@@ -1,8 +1,14 @@
 .search-bar-container {
   display: flex;
   flex-direction: column;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
   label {
     font-size: small;
+    margin: 10px;
   }
   input {
     border: 1px solid #ccc;
@@ -10,5 +16,31 @@
     height: 25px;
     margin-bottom: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 0 10px;
+  }
+}
+
+.filtered-list {
+  li {
+    padding: 0 1rem;
+    margin: 0 10px;
+    display: flex;
+    justify-content: space-between;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    .information-div {
+      display: flex;
+      width: 70%;
+      justify-content: space-between;
+      align-items: center;
+      button {
+        height: 36px;
+        width: 36px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
   }
 }
