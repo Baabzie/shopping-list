@@ -262,9 +262,9 @@ const ItemsList = () => {
         <SearchBar items={items} addItem={addItem} />
         <div className={styles["list-header-container"]}>
           <h2>To shop:</h2>
-          <button className={styles["add-new-btn"]} onClick={togglePopup}>
+          {/* <button className={styles["add-new-btn"]} onClick={togglePopup}>
             <Add className="icon" />
-          </button>
+          </button> */}
         </div>
         <ul>
           {items.map((item, index) =>
