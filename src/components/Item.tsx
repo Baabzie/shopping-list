@@ -87,6 +87,8 @@ const Item: React.FC<ItemProps> = ({
     setQuantity(value);
   };
 
+  //fix slider
+
   return (
     <li className={styles["list-item"]}>
       <div className={styles["information-div"]}>
